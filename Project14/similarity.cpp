@@ -2,6 +2,8 @@
 using namespace std;
 
 #define MAX_SCORE_OF_LENGTH 60
+#define MAX_SCORE_OF_ALPA 40
+#define END_OF_ALPHABET 26
 
 class Similarity
 {
@@ -26,32 +28,39 @@ public:
 
 	int checkEqual(const string& str1, const string& str2)
 	{
-		double samecnt = 0;
 		double totalcnt = str1.length() + str2.length();
 
-		int list1[26] = { 0 };
-		int list2[26] = { 0 };
+		int list1[END_OF_ALPHABET] = { 0 };
+		int list2[END_OF_ALPHABET] = { 0 };
 				
+		countAlphabet(str1, list1);
+		countAlphabet(str2, list2);
+
+		double samecnt = countSameAlphabet(list1, list2);
+
+		if (samecnt == totalcnt) return MAX_SCORE_OF_ALPA;
+
+		return ((samecnt/totalcnt) * MAX_SCORE_OF_ALPA);
+	}
+
+	void countAlphabet(const string& str1, int *list)
+	{
 		for (int i = 0; i < str1.length(); i++)
 		{
-			list1[str1[i] - 'A'] += 1;
- 		}
-
-		for (int i = 0; i < str2.length(); i++)
-		{
-			list2[str2[i] - 'A'] += 1;
+			list[str1[i] - 'A'] += 1;
 		}
+	}
 
-		for (int i = 0; i < 26; i++)
+	double countSameAlphabet(int *list1, int *list2)
+	{
+		double samecnt = 0;
+		for (int i = 0; i < END_OF_ALPHABET; i++)
 		{
 			if (list1[i] != 0 && list2[i] != 0) {
 				samecnt += list1[i] + list2[i];
 			}
 		}
-
-		if (samecnt == totalcnt) return 40;
-
-		return ((samecnt/totalcnt) * 40);
+		return samecnt;
 	}
 
 private:
@@ -60,4 +69,5 @@ private:
 		return str1.length() >= str2.length() * 2 ||
 			str2.length() >= str1.length() * 2;
 	}
+
 };
