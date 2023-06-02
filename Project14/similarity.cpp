@@ -1,4 +1,5 @@
 #include <string>
+using namespace std;
 
 #define MAX_SCORE_OF_LENGTH 60
 
@@ -13,19 +14,12 @@ public:
 		if (isValidLength(str1, str2))
 			return 0;
 
-		int shorter = 0;
-		double gap = 0;
+		int shorter = str1.length();
+		int longer = str2.length();
 
-		if (str1.length() > str2.length())
-		{
-			shorter = str2.length();
-			gap = str1.length() - shorter;
-		}
-		else
-		{
-			shorter = str1.length();
-			gap = str2.length() - shorter;
-		}
+		if (shorter > longer) swap(shorter, longer);
+
+		double gap = longer - shorter;
 
 		return ((1 - gap / shorter) * MAX_SCORE_OF_LENGTH);
 	}
